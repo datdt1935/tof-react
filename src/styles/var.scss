@@ -1,0 +1,48 @@
+// size
+$fullWidth: 100%;
+
+// font
+$font: 'Lato';
+$title: 'Lato';
+
+// base color
+$nocolor: transparent;
+$white: #ffffff;
+$black: #000000;
+
+// web color
+$main_color: #e54065;
+$second_color: #b2cf65;
+$text_color: #333333;
+$title_color: #333333;
+$border_color: #e9f3f5;
+$border_color_1: #c9c9c9;
+$place_holder: #494949;
+$web_bg: #f4f4f4;
+
+/* FONT SIZES
+-------------------------------------------------- */
+$font_size_xxs: 11px;
+$font_size_xs: 12px;
+$font_size_sm: 14px;
+$font_size: 16px;
+$font_size_l: 18px;
+$font_size_xl: 20px;
+$font_size_xxl: 22px;
+$font_size_xxxl: 36px;
+
+/* SCREEN SIZES
+-------------------------------------------------- */
+$screen-xs: 400px;
+$screen-sm: 576px;
+$screen-md: 767px;
+$screen-lg: 991px;
+$screen-ml: 1024px;
+$screen-xl: 1200px;
+$screen-xxl: 1400px;
+
+$form_color: #434343;
+$form_border: #e7e7e7;
+$form_label_color: #212121;
+
+@import './mixin.scss';

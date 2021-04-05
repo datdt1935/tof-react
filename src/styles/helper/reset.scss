@@ -1,0 +1,235 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+a,
+a:hover,
+a:focus {
+	text-decoration: none;
+	outline: none;
+	transition: all 0.3s ease-in-out;
+}
+
+img,
+iframe,
+video {
+	max-width: 100%;
+}
+
+table {
+	width: 100%;
+}
+
+img {
+	border: none;
+	max-width: 100%;
+	height: auto;
+}
+
+ol,
+ul,
+li {
+	list-style: none;
+}
+
+fieldset {
+	border: 2px groove threedface;
+	display: block;
+	padding-block-end: 0.75em;
+	padding-block-start: 0.35em;
+	text-align: center;
+}
+
+fieldset legend {
+	display: inline-block;
+	color: inherit;
+	background: none;
+	vertical-align: top;
+}
+
+::-webkit-selection {
+	background: $second_color;
+	color: $white;
+}
+
+::-moz-selection {
+	background: $second_color;
+	color: $white;
+}
+
+::selection {
+	background: $second_color;
+	color: $white;
+}
+
+::-webkit-input-placeholder {
+	-webkit-transition: text-indent 0.5s ease, color 0.5s ease;
+	transition: text-indent 0.5s ease, color 0.5s ease;
+	color: #969696;
+}
+
+input::-moz-placeholder {
+	-webkit-transition: text-indent 0.5s ease, color 0.5s ease;
+	transition: text-indent 0.5s ease, color 0.5s ease;
+	color: #969696;
+}
+
+input::ms-input-placeholder {
+	-webkit-transition: text-indent 0.5s ease, color 0.5s ease;
+	transition: text-indent 0.5s ease, color 0.5s ease;
+	color: #969696;
+}
+
+[placeholder]:focus::-webkit-input-placeholder {
+	text-indent: 10em;
+	color: transparent;
+}
+
+[placeholder]:focus::-moz-placeholder {
+	text-indent: 10em;
+	color: transparent;
+}
+
+body,
+html {
+	font-family: $font, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: $text_color;
+	background: $web_bg;
+	font-size: $font_size;
+	overflow-x: hidden;
+}
+
+.title {
+	font-family: $title, cursive;
+}
+
+.color-main {
+	color: $main_color;
+}
+
+.form-control,
+button,
+input,
+select {
+	transition: all 0.3s ease-in-out;
+	outline: none !important;
+	box-shadow: none;
+	cursor: pointer;
+
+	&:hover,
+	&:focus,
+	&:active {
+		outline: none !important;
+		box-shadow: none !important;
+		border-color: $main_color;
+	}
+}
+
+//custom Scroll Chrome
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #e54065;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(105, 105, 105, 0.4);
+}
+
+// slick arrow custom
+.slick-arrow {
+	background: none;
+	border: none;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin-top: -16px;
+	z-index: 1;
+	cursor: pointer;
+	font-size: 0;
+	width: 40px;
+	height: 40px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	color: $white;
+
+	&:hover {
+		opacity: 0.8;
+	}
+}
+
+.slick-prev {
+	right: -40px;
+}
+
+.slick-next {
+	transform: translateY(-50%) rotate(180deg);
+	left: -40px;
+}
+
+.slick-dots {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+
+	button {
+		font-size: 0;
+		width: 8px;
+		height: 8px;
+		border: 1px solid $nocolor;
+		box-sizing: border-box;
+		border-radius: 100%;
+		background: #aeaeae;
+		margin: 5px;
+	}
+
+	.slick-active {
+		button {
+			width: 10px;
+			height: 10px;
+			background: $main_color;
+			border: 1px solid $main_color;
+		}
+	}
+}
+
+/* Bootstrap Overrides */
+@media (min-width: $screen-ml) {
+	.container {
+		max-width: 1024px;
+	}
+}
+
+@media (min-width: $screen-xl) {
+	.container {
+		max-width: 1200px;
+	}
+}
+
+@media (min-width: 992px) {
+	.col-lg-5th {
+		flex: 0 0 20%;
+		max-width: 20%;
+	}
+}
+
+// fix bootstrap modal bug
+body {
+	padding-right: 0px !important;
+	min-height: 100vh;
+}
+
+textarea {
+	outline: none;
+
+	&:focus {
+		outline: none;
+	}
+}
