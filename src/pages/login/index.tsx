@@ -1,18 +1,11 @@
 import * as React from 'react';
-import { RootState } from '../../../reducer';
+import { RootState } from '../../reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { setLogin, setTitleLogin } from '../../../reducer/action';
-import { PRIVATE_ROUTES } from 'constants/route.constant';
+import { setLogin } from '../../reducer/action';
 
 import styles from './login.module.scss';
-
-type Props = {
-  todos: any[]; // What ever the type of state.todos is
-  actions: {
-    addTodo: Dispatch<any>;
-  };
-};
+import WEB_ROUTES from 'config/web-router';
 
 class Login extends React.Component<any> {
   public componentDidMount() {
@@ -29,7 +22,7 @@ class Login extends React.Component<any> {
             localStorage.setItem('isLogin', 'true');
 
             setTimeout(() => {
-              this.props.history.push(PRIVATE_ROUTES.Home);
+              this.props.history.push(WEB_ROUTES.DASHBOARD.path);
             }, 100);
           }}
         >
