@@ -3,4 +3,6 @@ export type SingleInstanceState = {
     showDialogCreate: boolean;
   };
   allUsers?: any;
+  title: string;
+  isLogin: boolean;
 };

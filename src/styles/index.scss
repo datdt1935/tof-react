@@ -6,42 +6,42 @@
 $page__title: $black;
 
 .page {
-	&__main {
-		position: relative;
-		height: 100%;
+  &__main {
+    position: relative;
+    height: 100%;
 
-		&.no__sidebar {
-			.sidebar__main {
-				display: none;
-			}
+    &.no__sidebar {
+      .sidebar__main {
+        display: none;
+      }
 
-			.page__container {
-				padding-left: 0;
-			}
-		}
-	}
+      .page__container {
+        padding-left: 0;
+      }
+    }
+  }
 
-	&__container {
-		width: 100%;
-		padding-left: 240px;
-	}
+  &__container {
+    width: 100%;
+    padding-left: 240px;
+  }
 
-	&__title {
-		font-style: normal;
-		font-weight: bold;
-		font-size: em(36px);
-		line-height: 42px;
-		color: $page__title;
-		margin-bottom: em(20px, 36px);
-	}
+  &__title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: em(36px);
+    line-height: 42px;
+    color: $page__title;
+    margin-bottom: em(20px, 36px);
+  }
 
-	&__content {
-		padding-top: em(20px);
-	}
+  &__content {
+    padding-top: em(20px);
+  }
 
-	@include max-lg() {
-		&__container {
-			padding-left: 0;
-		}
-	}
+  @include max-lg() {
+    &__container {
+      padding-left: 0;
+    }
+  }
 }
