@@ -9,6 +9,9 @@ import styles from './login.module.scss';
 import WEB_ROUTES from 'config/web-router';
 import { Link } from 'react-router-dom';
 
+// import { ipcRenderer } from 'electron';
+// const { requireTaskPool } = window.require('electron-remote');
+
 class Login extends React.Component<any> {
   public componentDidMount() {
     console.log('Run didmount dialog Create');
@@ -18,13 +21,29 @@ class Login extends React.Component<any> {
   getallDesign = async () => {
     // const response = await apiService.apiDesignsGet();
     // console.log(response);
+    // window.ipcRenderer.send('notify', 'message');
   };
 
   render() {
     console.log('PROPS LOGIN PAGE ', this.props);
     return (
       <div className={styles.container}>
-        <Link to='/'>Home</Link>
+        <button
+          onClick={() => {
+            // var ipcRenderer = require('electron').ipcRenderer;
+            // ipcRenderer.send('DAT', 'TITTLE');
+
+            var a = (window as any).electron.ipcRenderer.send(
+              'notify',
+              'DAT nef'
+            );
+            console.log(a);
+          }}
+        >
+          Click ipcRenderer
+        </button>
+
+        <Link to="/">Home</Link>
         <button
           className={styles.button}
           onClick={() => {
