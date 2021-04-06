@@ -12,8 +12,12 @@ const WEB_ROUTES = {
     title: 'Video Detail',
   },
   SAMPLE_PAGE: {
-    path: '/sample',
+    path: '/samples',
     title: 'This is sample page',
+  },
+  SENSOR_DETAIL: {
+    path: '/sample',
+    title: 'Sensor detail',
   },
 };
 

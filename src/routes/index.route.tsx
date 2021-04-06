@@ -6,29 +6,25 @@ import WEB_ROUTES from 'config/web-router';
 import Login from 'pages/login';
 import Dashboard from 'pages/dashboard';
 import Sample from 'pages/sample';
+import SensorDetail from 'pages/sensor-detail/sensor-detail.container';
+import HeaderComponent from 'pages/header/header.container';
 
 const Root: React.FC = (props) => {
   return (
     <>
-      <h1 onClick={() => {}}>AAA</h1>
-      {/* <Router> */}
-        <Suspense fallback={<div>Loading</div>}>
-          <Switch>
-            <Route exact path={WEB_ROUTES.LOGIN_PAGE.path} component={Login} />
-            <Route
-              exact
-              path={WEB_ROUTES.SAMPLE_PAGE.path}
-              component={Sample}
-            />
-            <PrivateRoute
-              exact
-              path={WEB_ROUTES.DASHBOARD.path}
-              component={Dashboard}
-            />
-            {/* <Route component={NotFound} /> */}
-          </Switch>
-        </Suspense>
-      {/* </Router> */}
+      <HeaderComponent></HeaderComponent>
+      <Suspense fallback={<div>Loading</div>}>
+        <Switch>
+          <Route exact path={WEB_ROUTES.LOGIN_PAGE.path} component={Login} />
+          <Route exact path={WEB_ROUTES.SAMPLE_PAGE.path} component={Sample} />
+          <Route exact path={WEB_ROUTES.DASHBOARD.path} component={Dashboard} />
+          <Route
+            exact
+            path={WEB_ROUTES.SENSOR_DETAIL.path}
+            component={SensorDetail}
+          />
+        </Switch>
+      </Suspense>
     </>
   );
 };
