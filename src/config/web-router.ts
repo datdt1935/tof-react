@@ -11,6 +11,10 @@ const WEB_ROUTES = {
     path: '/detail/:id',
     title: 'Video Detail',
   },
+  SAMPLE_PAGE: {
+    path: '/sample',
+    title: 'This is sample page',
+  },
 };
 
 export default WEB_ROUTES;

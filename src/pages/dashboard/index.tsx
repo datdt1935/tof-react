@@ -6,6 +6,7 @@ import { RootState } from 'reducer';
 
 import styles from './dashboard.module.scss';
 import WEB_ROUTES from 'config/web-router';
+import { Link } from 'react-router-dom';
 
 class Dashboard extends React.Component<any> {
   public componentDidMount() {
@@ -15,20 +16,25 @@ class Dashboard extends React.Component<any> {
   render() {
     console.log(this.props);
     return (
-      <div className={styles.container}>
-        <button
-          className={styles.button}
-          onClick={() => {
-            localStorage.setItem('isLogin', 'false');
+      <>
+        <h1>Page Dashboard</h1>
+        <Link to="/sample">Sample</Link>
 
-            setTimeout(() => {
-              this.props.history.push(WEB_ROUTES.LOGIN_PAGE.path);
-            }, 100);
-          }}
-        >
-          Logout
-        </button>
-      </div>
+        <div className={styles.container}>
+          <button
+            className={styles.button}
+            onClick={() => {
+              localStorage.setItem('isLogin', 'false');
+
+              setTimeout(() => {
+                this.props.history.push(WEB_ROUTES.LOGIN_PAGE.path);
+              }, 100);
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      </>
     );
   }
 }

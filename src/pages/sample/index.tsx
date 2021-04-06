@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import { setLogin } from '../../reducer/action';
 import { apiService } from '../../api';
 
-import styles from './login.module.scss';
+// import styles from './login.module.scss';
 import WEB_ROUTES from 'config/web-router';
 import { Link } from 'react-router-dom';
 
-class Login extends React.Component<any> {
+class Sample extends React.Component<any> {
   public componentDidMount() {
     console.log('Run didmount dialog Create');
     this.getallDesign();
@@ -23,10 +23,10 @@ class Login extends React.Component<any> {
   render() {
     console.log('PROPS LOGIN PAGE ', this.props);
     return (
-      <div className={styles.container}>
-        <Link to='/'>Home</Link>
+      <div>
+        <Link to="/">Home</Link> <br></br>
+        <h1>Sapmple page</h1>
         <button
-          className={styles.button}
           onClick={() => {
             localStorage.setItem('isLogin', 'true');
 
@@ -62,4 +62,4 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Sample);

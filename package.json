@@ -13,28 +13,33 @@
     "@types/react": "^16.14.5",
     "@types/react-dom": "^16.9.12",
     "@types/react-redux": "^7.1.16",
+    "history": "^4.10.1",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-addons-update": "^15.6.3",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
+    "react-router-redux": "^4.0.8",
     "react-scripts": "4.0.3",
     "redux-devtools-extension": "^2.13.9",
     "typescript": "^4.1.5",
     "typescript-axios": "file:gen/api"
   },
   "scripts": {
-    "dev" : "nf start",
+    "dev": "nf start",
     "electron": "electron .",
     "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "electron:serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm electron:start\"",
+    "electron:build": "npm build && electron-builder -c.extraMetadata.main=build/main.js",
+    "electron:start": "wait-on tcp:3000 && electron .",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "api": "rm -rf gen/api && openapi-generator-cli generate --input-spec swagger.json --generator-name typescript-axios --output gen/api --config api.json && cd gen/api && npm install && npm run build"
   },
-  "homepage": "./",
+  "homepage": ".",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -54,8 +59,14 @@
     "@openapitools/openapi-generator-cli": "^2.2.5",
     "@types/react-addons-update": "^0.14.20",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-router-redux": "^5.0.18",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.3",
     "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
+    "electron-wix-msi": "^3.2.0",
     "foreman": "^3.0.1",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "wait-on": "^5.3.0"
   }
 }
