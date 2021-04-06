@@ -2,6 +2,7 @@
   "name": "tof-react",
   "version": "0.1.0",
   "private": true,
+  "main": "src/electron-starter.js",
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^4.2.4",
@@ -24,12 +25,16 @@
     "typescript-axios": "file:gen/api"
   },
   "scripts": {
+    "dev" : "nf start",
+    "electron": "electron .",
+    "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "api": "rm -rf gen/api && openapi-generator-cli generate --input-spec swagger.json --generator-name typescript-axios --output gen/api --config api.json && cd gen/api && npm install && npm run build"
   },
+  "homepage": "./",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -49,6 +54,8 @@
     "@openapitools/openapi-generator-cli": "^2.2.5",
     "@types/react-addons-update": "^0.14.20",
     "@types/react-router-dom": "^5.1.7",
+    "electron": "^12.0.2",
+    "foreman": "^3.0.1",
     "sass": "^1.32.8"
   }
 }

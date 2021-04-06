@@ -15,13 +15,12 @@ class Login extends React.Component<any> {
   }
 
   getallDesign = async () => {
-    const response = await apiService.apiDesignsGet();
-
-    console.log(response);
+    // const response = await apiService.apiDesignsGet();
+    // console.log(response);
   };
 
   render() {
-    console.log(this.props);
+    console.log('PROPS LOGIN PAGE ', this.props);
     return (
       <div className={styles.container}>
         <button
