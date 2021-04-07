@@ -18,6 +18,7 @@
     "fabric": "^4.3.1",
     "history": "^4.10.1",
     "lodash": "^4.17.21",
+    "network-list": "^1.1.5",
     "node-pre-gyp": "^0.15.0",
     "react": "^17.0.2",
     "react-addons-update": "^15.6.3",
@@ -45,7 +46,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "api": "rm -rf gen/api && openapi-generator-cli generate --input-spec swagger.json --generator-name typescript-axios --output gen/api --config api.json && cd gen/api && npm install && npm run build"
-
   },
   "homepage": ".",
   "eslintConfig": {

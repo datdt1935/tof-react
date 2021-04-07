@@ -33,11 +33,11 @@ class Login extends React.Component<any> {
             // var ipcRenderer = require('electron').ipcRenderer;
             // ipcRenderer.send('DAT', 'TITTLE');
             const ipcRenderer = (window as any).electron.ipcRenderer;
-
             ipcRenderer
-              .invoke('some-name', 'Dat send')
-              .then((result: number) => {
-                alert(result);
+              .invoke('scanLocalIP', null)
+              .then((result: Array<any>) => {
+                alert(`We got ${result.length} ips`);
+                console.log('data', result);
               });
           }}
         >

@@ -5,8 +5,31 @@ const url = require('url');
 
 let mainWindow;
 
+const netList = require('network-list');
+
+const getAllIpNetwork = function async() {
+  return new Promise((rel) => {
+    // netList.scanEach({}, (err, obj) => {
+    //   console.log(`Got total ${ipArray.lenght}`);
+    //   ipArray.push(obj);
+    // });
+    // setTimeout(() => {
+    //   return rel(ipArray);
+    // }, 15000);
+    console.log('Start scan net list');
+    netList.scan({}, (err, arr) => {
+      console.log(arr);
+      return rel(
+        arr.filter((e) => {
+          return e.alive;
+        })
+      );
+    });
+  });
+};
+
 // let server = require('../server/index');
-let server = require('../server/tof-nestjs/dist/main');
+let server = require('../server/dist/main');
 
 const isDev = require('electron-is-dev');
 
@@ -35,9 +58,9 @@ function createWindow() {
     console.log(`You click at ${secs} second - ${date} ${month} ${year}`);
   });
 
-  ipcMain.handle('some-name', async (event, someArgument) => {
-    const result = 1 + 2;
-    return result;
+  ipcMain.handle('scanLocalIP', async (event, someArgument) => {
+    var ips = await getAllIpNetwork();
+    return ips;
   });
 
   let startUrl =
