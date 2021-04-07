@@ -32,3 +32,6 @@ dat.md
 /tof-react-win32-arm64
 /tof-react-win32-ia32
 /tof-react-win32-x64
+
+
+server/node_modules

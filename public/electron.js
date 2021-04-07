@@ -5,7 +5,8 @@ const url = require('url');
 
 let mainWindow;
 
-let server = require('../server/index');
+// let server = require('../server/index');
+let server = require('../server/tof-nestjs/dist/main');
 
 const isDev = require('electron-is-dev');
 
@@ -34,15 +35,10 @@ function createWindow() {
     console.log(`You click at ${secs} second - ${date} ${month} ${year}`);
   });
 
-
   ipcMain.handle('some-name', async (event, someArgument) => {
-    const result = 1+2;
-    return result
-  })
-
-
-
-
+    const result = 1 + 2;
+    return result;
+  });
 
   let startUrl =
     process.env.ELECTRON_START_URL ||
