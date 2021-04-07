@@ -35,6 +35,7 @@
   "description": "Tag",
   "scripts": {
     "dev": "nf start",
+    "startdev": "cross-env BROWSER=none react-scripts start",
     "electron": "electron .",
     "dev1": "concurrently  \"npm start\" \"node src/electron-wait-react\" ",
     "electron-dev": "set ELECTRON_START_URL=http://localhost:5000 && electron .",

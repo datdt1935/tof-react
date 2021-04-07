@@ -3,7 +3,6 @@ import { RootState } from '../../reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { setLogin } from '../../reducer/action';
-import { apiService } from '../../api';
 
 // import styles from './login.module.scss';
 import WEB_ROUTES from 'config/web-router';

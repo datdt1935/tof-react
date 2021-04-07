@@ -2,13 +2,19 @@
  * This service implements functionality to make api calls through open api generated client
  * We are adding custom axios instance which helps customize the generated client with interceptors and more axios functionalities
  */
-import { DesignsApi } from 'typescript-axios';
+import { NetworkAPIApi } from 'typescript-axios';
 import axios from 'axios';
+import { stringify } from 'node:querystring';
 
+const axiosConfig = {
+  baseURL: 'http://localhost:3200',
+  timeout: 30000,
+};
 // Create axios instance
-const axiosInstance = axios.create();
+const axiosInstance = axios.create(axiosConfig);
 
 // Configuration and base path are not provided
-const apiService = new DesignsApi(undefined, undefined, axiosInstance);
+// const apiService = new DesignsApi(undefined, undefined, axiosInstance);
+const networkService = new NetworkAPIApi(undefined, '', axiosInstance);
 
-export { apiService, axiosInstance };
+export { networkService, axiosInstance };

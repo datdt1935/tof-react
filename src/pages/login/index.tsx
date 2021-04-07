@@ -3,7 +3,7 @@ import { RootState } from '../../reducer';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { setLogin } from '../../reducer/action';
-import { apiService } from '../../api';
+import { networkService } from '../../api';
 
 import styles from './login.module.scss';
 import WEB_ROUTES from 'config/web-router';
@@ -19,7 +19,7 @@ class Login extends React.Component<any> {
   }
 
   getallDesign = async () => {
-    // const response = await apiService.apiDesignsGet();
+    const test = await networkService.networkControllerGetAll();
     // console.log(response);
     // window.ipcRenderer.send('notify', 'message');
   };

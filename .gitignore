@@ -33,5 +33,7 @@ dat.md
 /tof-react-win32-ia32
 /tof-react-win32-x64
 
-
 server/node_modules
+/server/node_modules
+/server/swagger.json
+/server/swagger-spec.json
