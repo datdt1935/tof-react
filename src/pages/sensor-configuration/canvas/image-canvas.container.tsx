@@ -5,7 +5,7 @@ import useImageCanvasHook from './image-canvas.hook';
 import {
   BackgroundType,
   DrawType,
-} from '../sensor-configuration/sensor-configuration.constant';
+} from '../recognition-properties/recognition-properties.constant';
 
 interface IImageCanvasProps {
   imageSource: string;

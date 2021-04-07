@@ -1,0 +1,38 @@
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+.tab {
+  height: 52px;
+  border-bottom: 1px solid #eceff3;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 10px;
+  &__button {
+    height: 19px;
+    padding: 12px 30px;
+    color: #6b778c;
+    font-size: 16px;
+    letter-spacing: -0.04px;
+    line-height: 19px;
+    background-color: unset;
+    border: unset;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 2px solid transparent;
+    &.selected {
+      font-family: 'rbt_Bold';
+      color: #0052cc;
+      border-color: #0052cc !important;
+      border-radius: 1px;
+    }
+  }
+}
+.content {
+  height: calc(100% - 52px);
+  display: none;
+  &.show {
+    display: block;
+  }
+}

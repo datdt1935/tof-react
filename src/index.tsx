@@ -10,13 +10,11 @@ import config from './store';
 import { HashRouter } from 'react-router-dom';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={config.configureStore}>
-      <HashRouter>
-        <Root />
-      </HashRouter>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={config.configureStore}>
+    <HashRouter>
+      <Root />
+    </HashRouter>
+  </Provider>,
   document.getElementById('root')
 );
 

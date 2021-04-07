@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import ImageCanvasComponent from '../canvas/image-canvas.container';
-import { BackgroundType, DrawType } from './sensor-configuration.constant';
-import styles from './sensor-configuration.module.scss';
+import { BackgroundType, DrawType } from './recognition-properties.constant';
+import styles from './recognition-properties.module.scss';
 
 import TestImage from './test.jpg';
 
