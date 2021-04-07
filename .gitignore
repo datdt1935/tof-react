@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+/dist
 # testing
 /coverage
 
@@ -23,3 +23,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 dat.md
+
+
+/tof-react-linux-arm64
+/tof-react-linux-armv7l
+/tof-react-linux-ia32
+/tof-react-linux-x64
+/tof-react-win32-arm64
+/tof-react-win32-ia32
+/tof-react-win32-x64

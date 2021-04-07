@@ -5,3 +5,7 @@ npm run api
 ```
 
 
+For build
+```
+npm install -g node-gyp
+```

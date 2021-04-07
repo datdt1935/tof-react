@@ -2,7 +2,7 @@
   "name": "tof-react",
   "version": "0.1.0",
   "private": true,
-  "main": "public/main.js",
+  "main": "public/electron.js",
   "dependencies": {
     "@craco/craco": "^6.1.1",
     "@reduxjs/toolkit": "^1.5.1",
@@ -14,9 +14,11 @@
     "@types/react": "^16.14.5",
     "@types/react-dom": "^16.9.12",
     "@types/react-redux": "^7.1.16",
+    "express": "^4.17.1",
     "fabric": "^4.3.1",
     "history": "^4.10.1",
     "lodash": "^4.17.21",
+    "node-pre-gyp": "^0.15.0",
     "react": "^17.0.2",
     "react-addons-update": "^15.6.3",
     "react-dom": "^17.0.2",
@@ -28,18 +30,22 @@
     "typescript": "^4.1.5",
     "typescript-axios": "file:gen/api"
   },
+  "author": "Xoontect devs",
+  "description": "Tag",
   "scripts": {
     "dev": "nf start",
     "electron": "electron .",
-    "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "dev1": "concurrently  \"npm start\" \"node src/electron-wait-react\" ",
+    "electron-dev": "set ELECTRON_START_URL=http://localhost:5000 && electron .",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm electron:start\"",
-    "electron:build": "npm build && electron-builder -c.extraMetadata.main=build/main.js",
+    "electron:build": "react-scripts build && electron-builder -c.extraMetadata.main=public/electron.js",
     "electron:start": "wait-on tcp:3000 && electron .",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "api": "rm -rf gen/api && openapi-generator-cli generate --input-spec swagger.json --generator-name typescript-axios --output gen/api --config api.json && cd gen/api && npm install && npm run build"
+
   },
   "homepage": ".",
   "eslintConfig": {
@@ -64,14 +70,25 @@
     "@types/react-addons-update": "^0.14.20",
     "@types/react-router-dom": "^5.1.7",
     "@types/react-router-redux": "^5.0.18",
+    "canvas": "^2.7.0",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
     "electron": "^12.0.2",
     "electron-builder": "^22.10.5",
+    "electron-builder-squirrel-windows": "^22.10.5",
+    "electron-is-dev": "^2.0.0",
+    "electron-packager": "^15.2.0",
     "electron-wix-msi": "^3.2.0",
     "foreman": "^3.0.1",
     "prettier": "^2.2.1",
     "sass": "^1.32.8",
     "wait-on": "^5.3.0"
+  },
+  "build": {
+    "appId": "com.electron.tof",
+    "productName": "Electron TOF App",
+    "win": {
+      "target": "squirrel"
+    }
   }
 }

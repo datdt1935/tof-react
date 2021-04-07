@@ -3,13 +3,14 @@ const path = require('path');
 const fs = require('fs');
 const url = require('url');
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+
+let server = require('../server/index');
+
+const isDev = require('electron-is-dev');
 
 function createWindow() {
   var pathPreload = __dirname + '\\preload.js';
-  console.log('AAA ' + pathPreload);
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -25,30 +26,37 @@ function createWindow() {
 
   ipcMain.on('notify', (_, message) => {
     let ts = Date.now();
-
     let date_ob = new Date(ts);
     let date = date_ob.getDate();
     let month = date_ob.getMonth() + 1;
     let year = date_ob.getFullYear();
-
-    // prints date & time in YYYY-MM-DD format
-    console.log(year + '-' + month + '-' + date);
-    // console.log('REECIE', message);
+    let secs = date_ob.getSeconds();
+    console.log(`You click at ${secs} second - ${date} ${month} ${year}`);
   });
 
-  setTimeout(() => {
-    // new Notification({ title: 'Notifiation', body: 'DAT' }).show();
-  }, 5000);
 
-  // and load the index.html of the app.
-  // mainWindow.loadURL('http://localhost:3000');
-  const startUrl =
+  ipcMain.handle('some-name', async (event, someArgument) => {
+    const result = 1+2;
+    return result
+  })
+
+
+
+
+
+  let startUrl =
     process.env.ELECTRON_START_URL ||
     url.format({
       pathname: path.join(__dirname, '/../build/index.html'),
       protocol: 'file:',
       slashes: true,
     });
+
+  // startUrl = mainWindow.loadURL(
+  //   isDev
+  //     ? 'http://localhost:5000'
+  //     : `file://${path.join(__dirname, '../build/index.html')}`
+  // );
   mainWindow.loadURL(startUrl);
 
   // Open the DevTools.

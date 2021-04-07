@@ -32,12 +32,13 @@ class Login extends React.Component<any> {
           onClick={() => {
             // var ipcRenderer = require('electron').ipcRenderer;
             // ipcRenderer.send('DAT', 'TITTLE');
+            const ipcRenderer = (window as any).electron.ipcRenderer;
 
-            var a = (window as any).electron.ipcRenderer.send(
-              'notify',
-              'DAT nef'
-            );
-            console.log(a);
+            ipcRenderer
+              .invoke('some-name', 'Dat send')
+              .then((result: number) => {
+                alert(result);
+              });
           }}
         >
           Click ipcRenderer
