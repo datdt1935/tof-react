@@ -9,13 +9,6 @@ const netList = require('network-list');
 
 const getAllIpNetwork = function async() {
   return new Promise((rel) => {
-    // netList.scanEach({}, (err, obj) => {
-    //   console.log(`Got total ${ipArray.lenght}`);
-    //   ipArray.push(obj);
-    // });
-    // setTimeout(() => {
-    //   return rel(ipArray);
-    // }, 15000);
     console.log('Start scan net list');
     netList.scan({}, (err, arr) => {
       console.log(arr);
@@ -61,6 +54,22 @@ function createWindow() {
   ipcMain.handle('scanLocalIP', async (event, someArgument) => {
     var ips = await getAllIpNetwork();
     return ips;
+  });
+
+  ipcMain.handle('mdnsFetch', async (event, someArgument) => {
+    return finalData;
+  });
+  ipcMain.handle('resetMDNS', async (event, someArgument) => {
+    finalData.splice(0, finalData.length);
+    return true;
+  });
+  ipcMain.handle('startMDNS', async (event, someArgument) => {
+    startMDNS();
+    return `Start the mDNS`;
+  });
+  ipcMain.handle('stopMDNS', async (event, someArgument) => {
+    stopMDNS();
+    return `Stop the mDNS`;
   });
 
   let startUrl =
@@ -114,3 +123,52 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// Service Worker scan
+
+var finalData = [];
+var mdns;
+var _ = require('lodash');
+function stopMDNS() {
+  mdns.destroy();
+  console.log(`Destroy MDNS!!`);
+}
+function startMDNS() {
+  mdns = require('multicast-dns')();
+  mdns.on('response', (response) => {
+    if (response.answers.length > 0) {
+      var answers = response.answers;
+      // console.log(answers);
+      for (var i = 0; i < answers.length - 1; i++) {
+        var item = answers[i];
+        // if (item.type == "A") {
+        //   continue;
+        // }
+
+        var notFound =
+          // eslint-disable-next-line no-loop-func
+          _.findIndex(finalData, function (o) {
+            return o.data === item.data;
+          }) === -1;
+        if (notFound) {
+          console.log(item);
+          finalData.push(item);
+        }
+      }
+    }
+  });
+
+  mdns.on('query', function (query) {
+    // console.log("got a query packet:", query);
+  });
+
+  // lets query for an A record for 'brunhilde.local'
+  mdns.query({
+    questions: [
+      {
+        name: '_services._dns-sd._udp.local',
+        type: 'A',
+      },
+    ],
+  });
+}

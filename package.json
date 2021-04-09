@@ -81,6 +81,7 @@
     "electron-packager": "^15.2.0",
     "electron-wix-msi": "^3.2.0",
     "foreman": "^3.0.1",
+    "multicast-dns": "^6.2.3",
     "prettier": "^2.2.1",
     "sass": "^1.32.8",
     "wait-on": "^5.3.0"

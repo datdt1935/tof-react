@@ -24,14 +24,38 @@ class Login extends React.Component<any> {
     // window.ipcRenderer.send('notify', 'message');
   };
 
+  onResetMDNS = async function () {
+    const ipcRenderer = (window as any).electron.ipcRenderer;
+    ipcRenderer.invoke('mdnsFetch', null).then((result: Array<any>) => {
+      console.log('data', result);
+    });
+  };
+
+  onMdnsFetch = async function () {
+    const ipcRenderer = (window as any).electron.ipcRenderer;
+    ipcRenderer.invoke('resetMDNS', null).then((result: any) => {
+      console.log('data', result);
+    });
+  };
+
+  onMdnsStart = async function () {
+    const ipcRenderer = (window as any).electron.ipcRenderer;
+    ipcRenderer.invoke('startMDNS', null).then((result: any) => {
+      console.log('data', result);
+    });
+  };
+  onMdnsStop = async function () {
+    const ipcRenderer = (window as any).electron.ipcRenderer;
+    ipcRenderer.invoke('stopMDNS', null).then((result: any) => {
+      console.log('data', result);
+    });
+  };
   render() {
     console.log('PROPS LOGIN PAGE ', this.props);
     return (
       <div className={styles.container}>
         <button
           onClick={() => {
-            // var ipcRenderer = require('electron').ipcRenderer;
-            // ipcRenderer.send('DAT', 'TITTLE');
             const ipcRenderer = (window as any).electron.ipcRenderer;
             ipcRenderer
               .invoke('scanLocalIP', null)
@@ -42,6 +66,38 @@ class Login extends React.Component<any> {
           }}
         >
           Click ipcRenderer
+        </button>
+
+        <button
+          onClick={() => {
+            this.onResetMDNS();
+          }}
+        >
+          GET mDNS
+        </button>
+
+        <button
+          onClick={() => {
+            this.onMdnsFetch();
+          }}
+        >
+          Reset Data MDNS
+        </button>
+
+        <button
+          onClick={() => {
+            this.onMdnsStop();
+          }}
+        >
+          onMdnsStop
+        </button>
+
+        <button
+          onClick={() => {
+            this.onMdnsStart();
+          }}
+        >
+          onMdnsStart
         </button>
 
         <Link to="/">Home</Link>
