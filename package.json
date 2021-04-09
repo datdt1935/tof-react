@@ -16,6 +16,7 @@
     "@types/react-dom": "^16.9.12",
     "@types/react-redux": "^7.1.16",
     "classnames": "^2.3.1",
+    "endpoint_swagger": "file:gen/api",
     "express": "^4.17.1",
     "fabric": "^4.3.1",
     "history": "^4.10.1",
@@ -30,8 +31,7 @@
     "react-router-redux": "^4.0.8",
     "react-scripts": "4.0.3",
     "redux-devtools-extension": "^2.13.9",
-    "typescript": "^4.1.5",
-    "endpoint_swagger": "file:gen/api"
+    "typescript": "^4.1.5"
   },
   "author": "Xoontect devs",
   "description": "Tag",
