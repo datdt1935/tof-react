@@ -1,5 +1,6 @@
 // size
 $fullWidth: 100%;
+$unitSpacing: 8px;
 
 // font
 $font: 'Lato';
@@ -44,5 +45,3 @@ $screen-xxl: 1400px;
 $form_color: #434343;
 $form_border: #e7e7e7;
 $form_label_color: #212121;
-
-@import './mixin.scss';

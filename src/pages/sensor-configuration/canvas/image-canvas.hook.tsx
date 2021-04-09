@@ -13,7 +13,7 @@ import { Point } from 'fabric/fabric-impl';
 import {
   BackgroundType,
   DrawType,
-} from '../sensor-configuration/sensor-configuration.constant';
+} from '../recognition-properties/recognition-properties.constant';
 // import
 
 export const POINT_RADIUS = 5;
