@@ -4,7 +4,14 @@ import map from 'lodash/map';
 import filter from 'lodash/filter';
 import flattenDeep from 'lodash/flattenDeep';
 import pick from 'lodash/pick';
-import { POINT_RADIUS } from './image-canvas.hook';
+import { updateControl } from './canvas-special.util';
+import { cloneDeep } from 'lodash';
+<<<<<<< Updated upstream
+import { DrawType } from 'constants/recognition-properties.constant';
+import { GateColor } from 'constants/color';
+=======
+import { DrawType } from '../recognition-properties/recognition-properties.constant';
+>>>>>>> Stashed changes
 
 const propsOfRect: string[] = [
   'left',
@@ -234,21 +241,22 @@ const getWidthHeightAfterRotate = (position: any, angle: number) => {
 
 const createCircle = (canvas: any, option: any) => {
   const circle = new fabric.Circle({
-    ...option,
-    originX: 'left',
-    originY: 'top',
-    radius: POINT_RADIUS,
-    fill: '#f55',
+    originX: 'center',
+    originY: 'center',
+    radius: 7 / canvas.getZoom(),
+    fill: '#eee',
     hasControls: false,
+    centeredRotation: true,
+    ...option,
   });
-  circle.on('dragover', (o: any) => {
-    console.log('circle dragover');
-  });
-
-  circle.on('dragleave', (o: any) => {
-    console.log('circle dragleave');
-  });
-
+  if (option.finish)
+    circle.on('selected', (o: any) => {
+      canvas.getObjects().forEach((obj: any) => {
+        if (obj.type !== 'circle' && obj.polyName === o.target.polyName) {
+          canvas.setActiveObject(obj);
+        }
+      });
+    });
   if (canvas) {
     canvas.add(circle);
   }
@@ -256,10 +264,10 @@ const createCircle = (canvas: any, option: any) => {
 
 const createLine = (canvas: any, points: any[], option: any) => {
   const line = new fabric.Line(points, {
-    ...option,
-    strokeWidth: 2,
-    stroke: '#f55',
+    strokeWidth: 2 / canvas.getZoom(),
+    stroke: '#eee',
     selectable: false,
+    ...option,
   });
   if (canvas) {
     canvas.add(line);
@@ -268,29 +276,208 @@ const createLine = (canvas: any, points: any[], option: any) => {
   return line;
 };
 
-const moveCircleAndUpdateCoordinate = (canvas: any, option: any) => {
-  if (option.target.isDrawZone) {
-    return;
+const createPolyline = (canvas: any, points: any[], option: any) => {
+  // create Polyline from collected points
+  let polyline = new fabric.Polyline(points, {
+<<<<<<< Updated upstream
+    objectCaching: false,
+    moveable: false,
+    perPixelTargetFind: true,
+    strokeWidth: 2 / canvas.getZoom(),
+=======
+    id: guid(),
+    objectCaching: false,
+    moveable: false,
+    perPixelTargetFind: true,
+    strokeWidth: 6,
+>>>>>>> Stashed changes
+    ...getOptionByType(option.drawType),
+    ...option,
+  });
+  if (!canvas) return polyline;
+
+  polyline = updateControl(polyline);
+  canvas.add(polyline);
+  canvas.renderAll();
+
+  canvas.setActiveObject(polyline);
+
+  return polyline;
+};
+
+const createPolygon = (canvas: any, points: any[], option: any) => {
+  // create Polyline from collected points
+  let polygon = new fabric.Polygon(points, {
+<<<<<<< Updated upstream
+    objectCaching: false,
+    moveable: false,
+    perPixelTargetFind: true,
+    strokeWidth: 2 / canvas.getZoom(),
+=======
+    id: guid(),
+    objectCaching: false,
+    moveable: false,
+    perPixelTargetFind: true,
+    strokeWidth: 6,
+>>>>>>> Stashed changes
+    ...getOptionByType(option.drawType),
+    ...option,
+  });
+  if (!canvas) return polygon;
+  polygon = updateControl(polygon);
+  canvas.add(polygon);
+  canvas.renderAll();
+  canvas.setActiveObject(polygon);
+  return polygon;
+};
+
+const moveCircleAndUpdatePolylineCoordinate = (
+  canvas: any,
+  circle: any,
+  objectType: string
+) => {
+  canvas.getObjects(objectType).forEach((object: any) => {
+    if (object.polyName === circle.polyName) {
+      object.points[circle.circleIndex] = { x: circle.left, y: circle.top };
+      object.setCoords();
+      updateControl(object);
+    }
+    return object;
+  });
+
+  canvas.renderAll();
+};
+
+const createFakeControlCircle = (canvas: any, object: any) => {
+  const points = object.points;
+  for (const key in points) {
+    if (Object.prototype.hasOwnProperty.call(points, key)) {
+      const point: any = points[key];
+      var x = point.x - object.pathOffset.x,
+        y = point.y - object.pathOffset.y;
+      const newPoint = fabric.util.transformPoint(
+        new fabric.Point(x, y),
+        object.calcTransformMatrix()
+      );
+      createCircle(canvas, {
+        left: newPoint.x,
+        top: newPoint.y,
+        polyName: object.polyName,
+        circleIndex: key,
+        stroke: object.stroke,
+        fill: object.stroke,
+        finish: true,
+        radius: object.cornerSize / (canvas.getZoom() * 2),
+      });
+    }
   }
 
-  const circleId = option.target.circleId;
-  const pointer = canvas.getPointer(option.e);
+  object.setCoords();
+};
 
-  canvas.getObjects('line').forEach((line: any) => {
-    if (line.src === circleId) {
-      line.set({
-        x1: pointer.x + POINT_RADIUS / 2,
-        y1: pointer.y + POINT_RADIUS / 2,
-      });
+const getCurrentDataToSave = (object: any, callback?: any) => {
+  object = cloneDeep(object);
+  const ENUM_DATA = [
+    'id',
+<<<<<<< Updated upstream
+    'isCreated',
+=======
+>>>>>>> Stashed changes
+    'points',
+    'drawType',
+    'stroke',
+    'strokeWidth',
+    'fill',
+    'polyName',
+  ];
+<<<<<<< Updated upstream
+
+  const zoomNumber = object.canvas.getZoom();
+  const points = [];
+  for (const key in object.oCoords) {
+    if (Object.prototype.hasOwnProperty.call(object.oCoords, key)) {
+      let point: any = object.oCoords[key];
+      points.push(new fabric.Point(point.x / zoomNumber, point.y / zoomNumber));
+=======
+  const points = object.points;
+
+  for (const key in points) {
+    if (Object.prototype.hasOwnProperty.call(points, key)) {
+      const point: any = points[key];
+      var x = point.x - object.pathOffset.x,
+        y = point.y - object.pathOffset.y;
+      points[key] = fabric.util.transformPoint(
+        new fabric.Point(x, y),
+        object.calcTransformMatrix()
+      );
+>>>>>>> Stashed changes
     }
-    if (line.des === circleId) {
-      line.set({
-        x2: pointer.x + POINT_RADIUS / 2,
-        y2: pointer.y + POINT_RADIUS / 2,
-      });
-    }
-  });
-  canvas.renderAll();
+  }
+
+  const response = pick(object, ENUM_DATA);
+  response.points = points;
+  if (callback) callback(response);
+
+  return response;
+};
+
+const getOptionByType = (drawType: DrawType) => {
+  let stroke = '';
+  let fill = 'transparent';
+
+  switch (drawType) {
+    case DrawType.LineIn:
+    case DrawType.LineInAndOut:
+    case DrawType.LineOut:
+<<<<<<< Updated upstream
+      stroke = GateColor.LineIn;
+      break;
+    case DrawType.ZoneExclusion:
+      stroke = GateColor.ZoneExclusion;
+=======
+      stroke = '#18c7bc';
+      break;
+    case DrawType.ZoneExclusion:
+      stroke = '#d20013';
+>>>>>>> Stashed changes
+      fill = 'rgba(210,0,19,0.1)';
+      break;
+
+    case DrawType.ZoneFloor:
+<<<<<<< Updated upstream
+      stroke = GateColor.ZoneFloor;
+      fill = '#c6ff0020';
+      break;
+    case DrawType.ZoneMark:
+      stroke = GateColor.ZoneMark;
+=======
+      stroke = '#c6ff00';
+      fill = '#c6ff0020';
+      break;
+    case DrawType.ZoneMark:
+      stroke = '#d500f9';
+>>>>>>> Stashed changes
+      fill = '#d500f920';
+      break;
+    default:
+      break;
+  }
+
+  return { stroke, fill };
+};
+
+const validatePolyObject = (drawType: DrawType, points: any[]) => {
+  if (points.length < 2) return false;
+  if (
+    points.length === 2 &&
+    (drawType === DrawType.ZoneExclusion ||
+      drawType === DrawType.ZoneFloor ||
+      drawType === DrawType.ZoneMark)
+  ) {
+    return false;
+  }
+
+  return true;
 };
 
 export {
@@ -298,11 +485,17 @@ export {
   createCircle,
   createLine,
   createRect,
-  getWidthHeightAfterRotate,
+  createPolyline,
+  createPolygon,
+  createFakeControlCircle,
+  getCurrentDataToSave,
+  getOptionByType,
   getTextFromRect,
   getTextByPoint,
   guid,
-  moveCircleAndUpdateCoordinate,
+  getWidthHeightAfterRotate,
+  moveCircleAndUpdatePolylineCoordinate,
   parseOrcData,
   validateRect,
+  validatePolyObject,
 };

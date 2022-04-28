@@ -2,9 +2,8 @@
  * This service implements functionality to make api calls through open api generated client
  * We are adding custom axios instance which helps customize the generated client with interceptors and more axios functionalities
  */
-import { NetworkAPIApi } from 'endpoint_swagger';
+import { NetworkAPIApi } from 'swagger_tof_pack';
 import axios from 'axios';
-import { stringify } from 'node:querystring';
 
 const axiosConfig = {
   baseURL: 'http://localhost:3200',

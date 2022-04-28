@@ -1,20 +1,137 @@
+@import 'styles/mixin.scss';
+
+<<<<<<< Updated upstream
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+=======
+>>>>>>> Stashed changes
 .action {
-  height: 40px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 0 20px;
+  flex-wrap: wrap;
 }
 
 .flex-1 {
   flex: 1;
 }
 
-.button {
-  width: 100px;
-  height: 30px;
-  border-radius: 5px;
-  margin-right: 10px;
-  border: 0;
+.group-button {
+  @include containerCentered();
+  margin-right: 50px;
+
+  &__title {
+    width: 100px;
+    text-align: center;
+    @include sfProDisplayFont('sf_Bold');
+  }
+
+  .button {
+    @include sfProDisplayFont('sf_Regular');
+    width: 100px;
+    height: 44px;
+    border: 0;
+    cursor: pointer;
+    &:first-of-type {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    &:last-of-type {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+    &:focus {
+      outline: 0;
+    }
+  }
+<<<<<<< Updated upstream
+
+  &__icon {
+    margin-right: 10px;
+    font-size: 12px;
+    &-in {
+      color: #57d9a3;
+    }
+    &-out {
+      color: #ff5630;
+    }
+  }
+=======
+>>>>>>> Stashed changes
+}
+
+.icon-button {
+  @include containerCentered();
+  box-sizing: border-box;
   cursor: pointer;
+  height: 44px;
+  width: 44px;
+  border-radius: 4px;
+<<<<<<< Updated upstream
+  font-size: 18px;
+=======
+  font-size: 16px;
+>>>>>>> Stashed changes
+  margin-left: 12px;
+}
+
+.image {
+  width: 100%;
+  height: 50%;
+  position: relative;
+}
+
+.dialog {
+  width: 40%;
+}
+
+.detail {
+  @include containerCentered();
+  align-items: flex-start;
+  margin: 25px 0;
+  height: calc(50% - 95px);
+  width: 100%;
+  &__gate {
+    height: 100%;
+  }
+
+  &__learn {
+    height: 100%;
+    padding: 0 0px 0 50px;
+
+    &-title {
+      @include sfProDisplayFont('sf_Regular');
+      @include containerCentered();
+      justify-content: flex-start;
+    }
+    &-value {
+      @include containerCentered();
+      justify-content: flex-end;
+    }
+  }
+
+  &__title {
+    height: 30px;
+    margin-left: 30px;
+    @include sfProDisplayFont('sf_Bold');
+  }
+
+  &__card {
+    width: calc(100% - 65px);
+    height: calc(100% - 110px);
+    margin-top: 55px;
+    padding: 16px 32px;
+    div {
+      height: 40px;
+    }
+  }
+}
+
+.max-height {
+  height: 100%;
 }

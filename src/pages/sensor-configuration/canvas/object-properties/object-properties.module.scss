@@ -1,0 +1,50 @@
+<<<<<<< Updated upstream
+@import 'styles/mixin.scss';
+
+.object-properties {
+  width: 350px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  &__header {
+    height: 40px;
+    @include containerCentered();
+  }
+  &__row {
+    @include containerCentered();
+    justify-content: flex-start;
+    padding: 0 10px;
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    width: 80px;
+  }
+
+  &__control {
+    flex: 1;
+  }
+
+  &__color-preview {
+    width: 30px;
+    height: 30px;
+  }
+
+  &__action {
+    margin: 0 10px;
+
+    height: 50px;
+    @include containerCentered();
+    justify-content: flex-end;
+=======
+.object-properties {
+  width: 200px;
+  position: absolute;
+  right: 20px;
+  top: 0;
+  height: 400px;
+  &__header {
+    height: 40px;
+>>>>>>> Stashed changes
+  }
+}

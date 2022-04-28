@@ -1,6 +1,10 @@
 export enum DrawType {
-  Line = 1,
-  Zone = 2,
+  LineIn = 'Line in',
+  LineOut = 'Line out',
+  LineInAndOut = 'Line in/out',
+  ZoneFloor = 'Floor',
+  ZoneExclusion = 'Exclusion',
+  ZoneMark = 'Mark',
 }
 
 export enum BackgroundType {

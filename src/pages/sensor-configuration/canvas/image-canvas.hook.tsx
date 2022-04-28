@@ -1,42 +1,56 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import {
+  useEffect,
+  useState,
+  useRef,
+  useLayoutEffect,
+  useCallback,
+  useImperativeHandle,
+} from 'react';
 import { fabric } from 'fabric';
 
 import get from 'lodash/get';
+import omit from 'lodash/omit';
 
 import {
   guid,
   createCircle,
   createLine,
-  moveCircleAndUpdateCoordinate,
+  createPolygon,
+  createPolyline,
+  createFakeControlCircle,
+  getCurrentDataToSave,
+  getOptionByType,
+  validatePolyObject,
 } from './image-canvas.util';
-import { Point } from 'fabric/fabric-impl';
+
 import {
   BackgroundType,
   DrawType,
-} from '../recognition-properties/recognition-properties.constant';
-// import
-
-export const POINT_RADIUS = 5;
+} from 'constants/recognition-properties.constant';
+import { updateControl } from './canvas-special.util';
+import { CanvasState, initialCanvasState } from 'constants/canvas.contant';
+import produce from 'immer';
+import { cloneDeep } from 'lodash';
 
 const optionCanvas: Object = {
   hoverCursor: 'pointer',
   selection: false,
-  centeredRotation: true,
   backgroundColor: 'transparent',
+  stopContextMenu: true,
+  targetFindTolerance: 20,
 };
 
 // action
 function useImageCanvasHook(
   imageSource: string,
-  width: number,
-  height: number,
-  captureOcrData: Function,
+  finishDraw: Function,
   drawType: DrawType,
   backgroundType: BackgroundType,
-  dataRectangle?: any[]
+  ref?: any
 ) {
-  const [canvas, setCanvas] = useState<any>(null);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [state, setState] = useState<CanvasState>(initialCanvasState);
+
+  const containerRef = useRef(null);
 
   function usePrevious(value: any) {
     const ref = useRef();
@@ -48,79 +62,127 @@ function useImageCanvasHook(
 
   const prevState: any = usePrevious({ imageSource });
 
-  const initDrawPolyLine: any = (isDrawZone?: boolean) => {
-    let activeLine: any, isDown: boolean;
-    let pointArr: Point[] = [];
-    let polylineName: any = null;
+<<<<<<< Updated upstream
+  const setSelection = useCallback(
+    (selection: boolean) => {
+      state.canvas.getObjects().forEach((object: any) => {
+        if (object.type === 'polyline' || object.type === 'polygon')
+          object.evented = selection;
+      });
+    },
+    [state.canvas]
+  );
+
+  const initDrawPolyLine: any = useCallback(() => {
+=======
+  const initDrawPolyLine: any = () => {
+>>>>>>> Stashed changes
+    let activeLine: any, isDrawing: boolean;
+    let pointArr: any[] = [];
+    let polyName: any = null;
+    let circleIndex = 0;
+
+    const canvas = state.canvas;
 
     function addObjectByPoint(pointer: any) {
-      polylineName = guid() || polylineName;
+      polyName = polyName || guid();
       pointArr.push(pointer);
-      const circleId = guid();
-      if (activeLine) {
-        activeLine.des = circleId;
-      }
-
-      createCircle(canvas, {
-        left: pointer.x - POINT_RADIUS / 2,
-        top: pointer.y - POINT_RADIUS / 2,
-        polylineName,
-        circleId,
-        isDrawZone,
+      const stroke = getOptionByType(drawType).stroke;
+      createCircle(state.canvas, {
+        left: pointer.x,
+        top: pointer.y,
+        fill: stroke,
+        polyName,
+        circleIndex,
       });
       const arrLength = pointArr.length;
 
       const lastPoint = get(pointArr, [arrLength - 1]);
       activeLine = createLine(
-        canvas,
+        state.canvas,
         [
-          get(lastPoint, ['x']) + POINT_RADIUS / 2,
-          get(lastPoint, ['y']) + POINT_RADIUS / 2,
-          get(lastPoint, ['x']) + POINT_RADIUS / 2,
-          get(lastPoint, ['y']) + POINT_RADIUS / 2,
+          get(lastPoint, ['x']),
+          get(lastPoint, ['y']),
+          get(lastPoint, ['x']),
+          get(lastPoint, ['y']),
         ],
-        { src: circleId, polylineName }
+        {
+          polyName,
+          stroke: stroke,
+        }
       );
-      canvas.add(activeLine);
+      circleIndex++;
+      state.canvas.add(activeLine);
     }
-    canvas.on('object:moving', function (o: any) {
-      const circleId = o.target.circleId;
-      const pointer = canvas.getPointer(o.e);
 
-      canvas.getObjects('line').map((line: any) => {
-        if (line.src === circleId) {
-          line.set({
-            x1: pointer.x + POINT_RADIUS / 2,
-            y1: pointer.y + POINT_RADIUS / 2,
-          });
-        }
-        if (line.des === circleId) {
-          line.set({
-            x2: pointer.x + POINT_RADIUS / 2,
-            y2: pointer.y + POINT_RADIUS / 2,
-          });
-        }
+    canvas.on('object:modified', function (option: any) {
+      const object = option.target;
+      if (object.type !== 'polyline' && object.type !== 'polygon') return;
+      object._calcDimensions();
+      object.setCoords();
+      canvas.renderAll();
+      const activeObject = canvas.getActiveObject();
+      if (activeObject.id === object.id) {
+        setState(
+          produce((draft: CanvasState) => {
+            draft.activeObject = object;
+          })
+        );
+      }
+      getCurrentDataToSave(object, finishDraw);
+    });
+
+    canvas.on('selection:updated', function (option: any) {
+      const object = option.target;
+      if (object.type !== 'polygon' && object.type !== 'polyline') return;
+      if (state.activeObject) {
+        createFakeControlCircle(canvas, state.activeObject);
+      }
+      canvas.getObjects('circle').forEach((circle: any) => {
+        if (circle.polyName === object.polyName) canvas.remove(circle);
       });
+
+      setState(
+        produce((draft: CanvasState) => {
+          draft.activeObject = object;
+        })
+      );
+      canvas.renderAll();
+    });
+    canvas.on('selection:created', function (option: any) {
+      const object = option.target;
+      if (
+        (object.type !== 'polygon' && object.type !== 'polyline') ||
+        isDrawing
+      )
+        return;
+=======
+>>>>>>> Stashed changes
+
+      canvas.getObjects('circle').forEach((circle: any) => {
+        if (circle.polyName === object.polyName) canvas.remove(circle);
+      });
+      setState(
+        produce((draft: CanvasState) => {
+          draft.activeObject = object;
+        })
+      );
       canvas.renderAll();
     });
 
-    canvas.on('object:moved', function (o: any) {
-      console.log(o.target.get('type'));
-      const objectType = o.target.get('type');
-      switch (objectType) {
-        case 'polygon':
-          break;
-        case 'circle':
-          moveCircleAndUpdateCoordinate(canvas, o);
-
-          break;
-        default:
-          break;
-      }
+    canvas.on('before:selection:cleared', function (option: any) {
+      const object = option.target;
+      setState(
+        produce((draft: CanvasState) => {
+          draft.activeObject = null;
+        })
+      );
+      if (object.type !== 'polygon' && object.type !== 'polyline') return;
+      createFakeControlCircle(canvas, object);
     });
 
     canvas.on('mouse:down', function (o: any) {
-      if (o.target || !isDown) {
+      if (!isDrawing) {
         return;
       }
       const pointer = canvas.getPointer(o.e);
@@ -129,45 +191,86 @@ function useImageCanvasHook(
     });
 
     canvas.on('mouse:move', function (o: any) {
-      if (!isDown || !activeLine) {
+      if (!isDrawing || !activeLine) {
         return;
       }
       const pointer = canvas.getPointer(o.e);
       activeLine.set({
-        x2: pointer.x + POINT_RADIUS / 2,
-        y2: pointer.y + POINT_RADIUS / 2,
+        x2: pointer.x,
+        y2: pointer.y,
       });
       canvas.renderAll();
     });
 
     canvas.on('mouse:dblclick', (o: any) => {
-      if (!isDown) {
+<<<<<<< Updated upstream
+      if (!!o.target && o.target.type !== 'circle') return;
+=======
+>>>>>>> Stashed changes
+      if (!isDrawing) {
         const pointer = canvas.getPointer(o.e);
-        isDown = true;
+        isDrawing = true;
         addObjectByPoint(pointer);
+        setSelection(false);
         return;
       }
 
-      if (isDrawZone) {
-        canvas.getObjects('line').forEach((element: any) => {
-          if (element.polylineName === polylineName) canvas.remove(element);
+      const circlePoints: any[] = [];
+      setSelection(true);
+
+      canvas.remove(activeLine);
+      canvas.getObjects().forEach((object: any) => {
+        if (object.type === 'line' && object.polyName === polyName)
+          canvas.remove(object);
+        if (object.type === 'circle' && object.polyName === polyName) {
+          circlePoints.push(object);
+          canvas.remove(object);
+        }
+      });
+      canvas.renderAll();
+      if (!validatePolyObject(drawType, pointArr)) {
+        isDrawing = false;
+        pointArr = [];
+        polyName = null;
+        activeLine = null;
+        circleIndex = 0;
+        return;
+      }
+      if (
+        drawType === DrawType.ZoneExclusion ||
+        drawType === DrawType.ZoneFloor ||
+        drawType === DrawType.ZoneMark
+      ) {
+        const polygon = createPolygon(canvas, pointArr, {
+          polyName,
+          drawType,
         });
-        canvas.add(
-          new fabric.Polygon(pointArr, { fill: 'transparent', stroke: '#f55' })
+        getCurrentDataToSave(polygon, finishDraw);
+        setState(
+          produce((draft: CanvasState) => {
+            draft.activeObject = polygon;
+          })
         );
       } else {
-        canvas.remove(activeLine);
-        canvas.getObjects().forEach((element: any) => {
-          if (element.type === 'line' && !element.des) canvas.remove(element);
+        const polyline = createPolyline(canvas, pointArr, {
+          polyName,
+          drawType,
         });
+        getCurrentDataToSave(polyline, finishDraw);
+        setState(
+          produce((draft: CanvasState) => {
+            draft.activeObject = polyline;
+          })
+        );
       }
 
-      isDown = false;
+      isDrawing = false;
       pointArr = [];
-      polylineName = null;
+      polyName = null;
       activeLine = null;
+      circleIndex = 0;
     });
-  };
+  }, [state.activeObject, state.canvas, drawType, finishDraw, setSelection]);
 
   // eslint-disable-next-line
   const initBackground = (canvas: any, imgElement: any) => {
@@ -185,37 +288,84 @@ function useImageCanvasHook(
     );
   };
 
-  // eslint-disable-next-line
-  function initVideosBackground(canvas: any) {
-    var video1El: any = document.getElementById('video1');
-    if (!video1El) return;
-    var video1 = new fabric.Image(video1El);
-    video1El.load();
-    video1El.play();
-    console.log(video1El.width);
-    canvas.setBackgroundImage(video1, canvas.renderAll.bind(canvas));
-    canvas.setDimensions(
-      {
-        width: video1El.width,
-        height: video1El.height,
-      },
-      {
-        backstoreOnly: true,
+  const zoomImage = useCallback(
+    (zoomNumber: number) => {
+      const canvas = state.canvas;
+      let zoom = canvas.getZoom() * zoomNumber;
+      let canvasHeight = canvas.getHeight() * zoomNumber;
+      let canvasWidth = canvas.getWidth() * zoomNumber;
+      if (canvasWidth > state.containerWidth) {
+        const scaleW = state.containerWidth / canvasWidth;
+        canvasHeight = canvasHeight * scaleW;
+        canvasWidth = canvasWidth * scaleW;
+        zoom = zoom * scaleW;
       }
-    );
-    fabric.util.requestAnimFrame(function render() {
+
+      canvas.setWidth(canvasWidth);
+      canvas.setHeight(canvasHeight);
+      canvas.setZoom(zoom);
       canvas.renderAll();
-      fabric.util.requestAnimFrame(render);
+    },
+    [state.canvas, state.containerWidth]
+  );
+
+  // eslint-disable-next-line
+  function initVideosBackground() {
+    const canvas = state.canvas;
+    var video = document.createElement('video');
+    video.setAttribute(
+      'src',
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+    );
+
+    video.setAttribute('width', state.containerWidth + 'px');
+    video.setAttribute('height', state.containerWidth + 'px');
+    video.addEventListener('loadedmetadata', function (e) {
+      canvas.setHeight(video.videoHeight);
+      canvas.setWidth(video.videoWidth);
+      fabric.util.requestAnimFrame(function render() {
+        canvas.renderAll();
+        fabric.util.requestAnimFrame(render);
+      });
+      var video1 = new fabric.Image(video, {
+        width: video.videoWidth,
+        height: video.videoHeight,
+      });
+
+      canvas.setBackgroundImage(video1, canvas.renderAll.bind(canvas));
+      canvas.setDimensions({
+        width: state.containerWidth,
+        height: state.containerHeight,
+      });
+      //   const scaleH = containerHeight / video.videoHeight;
+      //   console.log(scaleH);
+      //   zoomImage(scaleH);
     });
+    video.load();
+    video.play();
+    video.remove();
   }
 
   // eslint-disable-next-line
   const initCanvas = () => {
     const element: any = document.getElementById('image__canvas');
     if (!element) return;
-    const _option: Object = { ...optionCanvas, width: width, height: height };
+    const offsetHeight = (containerRef.current as any).offsetHeight || 0;
+    const offsetWidth = (containerRef.current as any).offsetWidth || 0;
+
+    const _option: Object = {
+      ...optionCanvas,
+      width: offsetWidth,
+      height: offsetHeight,
+    };
     const canvas: any = new fabric.Canvas(element, _option);
-    setCanvas(canvas);
+    setState(
+      produce((draft: CanvasState) => {
+        draft.containerHeight = offsetHeight;
+        draft.containerWidth = offsetWidth;
+        draft.canvas = canvas;
+      })
+    );
   };
 
   const initImageBackground = () => {
@@ -224,30 +374,67 @@ function useImageCanvasHook(
     }
     const imgElement = new Image();
     imgElement.onload = function () {
-      initBackground(canvas, imgElement);
+      state.canvas.setWidth(imgElement.width);
+      state.canvas.setHeight(imgElement.height);
+
+      const scaleH = state.containerHeight / imgElement.height;
+      initBackground(state.canvas, imgElement);
+      zoomImage(scaleH);
     };
     imgElement.onerror = () => {
-      setIsError(true);
+      setState(
+        produce((draft: CanvasState) => {
+          draft.isError = true;
+        })
+      );
     };
     imgElement.src = imageSource;
   };
 
-  const removeEvents = () => {
+  const removeEvents = useCallback(() => {
+    const canvas = state.canvas;
+    canvas.off('object:modified');
+    canvas.off('selection:created');
+    canvas.off('selection:updated');
+    canvas.off('before:selection:cleared');
+    canvas.off('object:modified');
+
     canvas.off('mouse:down');
-    canvas.off('mouse:up');
     canvas.off('mouse:move');
+    canvas.off('mouse:dblclick');
 
     canvas.isDrawingMode = false;
     canvas.selection = false;
 
     return canvas;
-  };
+  }, [state.canvas]);
+
+  const reCalculateCanvas = useCallback(() => {
+    const canvas = state.canvas;
+    if (!canvas) return;
+    const offsetHeight = (containerRef.current as any).offsetHeight;
+    const offsetWidth = (containerRef.current as any).offsetWidth;
+
+    setState(
+      produce((draft: CanvasState) => {
+        draft.containerHeight = offsetHeight;
+        draft.containerWidth = offsetWidth;
+      })
+    );
+    const canvasHeight = canvas.getHeight();
+    const scaleH = offsetHeight / canvasHeight;
+    zoomImage(scaleH);
+  }, [containerRef, state.canvas, zoomImage]);
 
   useEffect(() => {
     if (prevState && prevState.imageSource !== imageSource) {
       return;
     }
-    setIsError(false);
+    setState(
+      produce((draft: CanvasState) => {
+        draft.isError = false;
+      })
+    );
     const element = document.getElementById('image__canvas-container');
     if (!element) {
       return;
@@ -258,30 +445,161 @@ function useImageCanvasHook(
     // eslint-disable-next-line
   }, [imageSource]);
 
-  useEffect(() => {
+<<<<<<< Updated upstream
+  const updateObjectByPolyName = (
+    name: string,
+    option: any,
+    reInitControl?: boolean,
+    isChangedDrawType?: boolean
+  ) => {
+    state.canvas.getObjects().forEach((object: any) => {
+      if (object.type !== 'circle' && object.polyName === name) {
+        object = Object.assign(object, option);
+        if (isChangedDrawType) {
+          object.type = 'polyline';
+        }
+        if (reInitControl) {
+          getCurrentDataToSave(object, finishDraw);
+          updateControl(object);
+        }
+      }
+    });
+
+    state.canvas.renderAll();
+  };
+
+  const removePolyObject = (polyName: string) => {
+    const canvas = state.canvas;
+    const activeObj = canvas.getActiveObject();
+    if (activeObj && activeObj.polyName === polyName) canvas.remove(activeObj);
+    canvas.getObjects().forEach((object: any) => {
+      if (object.polyName === polyName) {
+        canvas.remove(object);
+      }
+    });
+    canvas.renderAll();
+  };
+
+  const clearAll = () => {
+    const canvas = state.canvas;
     if (!canvas) return;
-    console.log('useEffect canvas drawType');
-    removeEvents();
-    initDrawPolyLine(drawType === DrawType.Zone);
-    // eslint-disable-next-line
-  }, [drawType, canvas]);
+    canvas.getObjects().forEach((object: any) => {
+      canvas.remove(object);
+    });
+    canvas.renderAll();
+  };
+
+=======
+>>>>>>> Stashed changes
+  useImperativeHandle(ref, () => ({
+    getAlert() {},
+    createPolyObject: (data: any[]) => {
+      setState(
+        produce((draft: CanvasState) => {
+          draft.dataRectangle = data;
+        })
+      );
+    },
+<<<<<<< Updated upstream
+    clearAll: clearAll,
+    updateObjectByPolyName: updateObjectByPolyName,
+    removePolyObject: removePolyObject,
+    reCalculateCanvas: reCalculateCanvas,
+=======
+    updateObjectById: (id: string) => {
+      const objects = canvas.getItemsById(id);
+    },
+    removePolyObject: (polyName: string) => {
+      canvas.remove(canvas.getActiveObject());
+      canvas.getObjects().forEach((object: any) => {
+        if (object.polyName === polyName) canvas.remove(object);
+      });
+      canvas.renderAll();
+    },
+>>>>>>> Stashed changes
+  }));
 
   useEffect(() => {
-    if (!canvas) return;
-    console.log('useEffect canvas backgroundType');
+    if (!state.canvas) return;
+    removeEvents();
+    initDrawPolyLine();
+  }, [drawType, state.canvas, removeEvents, initDrawPolyLine]);
+
+  useEffect(() => {
+    if (!state.canvas) return;
+    state.canvas.setZoom(1);
     if (backgroundType === BackgroundType.Video) {
-      initVideosBackground(canvas);
+      initVideosBackground();
     } else {
       initImageBackground();
     }
 
     // eslint-disable-next-line
-  }, [backgroundType, canvas]);
+  }, [backgroundType, state.canvas]);
+
+  useEffect(() => {
+    const canvas = state.canvas;
+    const dataRectangle = state.dataRectangle;
+    if (!canvas) return;
+
+    if (!Array.isArray(dataRectangle) || !dataRectangle.length) return;
+
+    canvas.getObjects().forEach((object: any) => {
+      canvas.remove(object);
+    });
+    for (const key in dataRectangle) {
+      if (Object.prototype.hasOwnProperty.call(dataRectangle, key)) {
+        const data = dataRectangle[key].detail;
+<<<<<<< Updated upstream
+
+        const option = {
+          ...omit(data, ['points']),
+=======
+        const option = {
+          ...omit(data, ['points']),
+          polyName: guid(),
+>>>>>>> Stashed changes
+          id: dataRectangle[key].id,
+        };
+        switch (data.drawType) {
+          case DrawType.LineIn:
+          case DrawType.LineOut:
+          case DrawType.LineInAndOut:
+            createPolyline(canvas, cloneDeep(data.points), option);
+            break;
+          case DrawType.ZoneFloor:
+          case DrawType.ZoneExclusion:
+          case DrawType.ZoneMark:
+            createPolygon(canvas, cloneDeep(data.points), option);
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+  }, [state.dataRectangle, state.canvas]);
+
+  useLayoutEffect(() => {
+    window.addEventListener('resize', reCalculateCanvas);
+    return () => window.removeEventListener('resize', reCalculateCanvas);
+  }, [reCalculateCanvas]);
+
+  const updateActiveObject = (object: any) => {
+    setState(
+      produce((draft: CanvasState) => {
+        draft.activeObject = { ...draft.activeObject, ...object };
+      })
+    );
+  };
 
   return {
-    isError,
-    initBackground,
-    initVideosBackground,
+    activeObject: state.activeObject,
+    updateActiveObject: updateActiveObject,
+
+    containerRef,
+    isError: state.isError,
+    updateObjectByPolyName,
   };
 }
 

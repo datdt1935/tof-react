@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import React from 'react';
-import WEB_ROUTES from 'config/web-router';
+import WEB_ROUTES from 'constants/web-router';
 
 const PrivateRoute = ({
   component: RouteComponent,

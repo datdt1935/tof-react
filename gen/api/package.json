@@ -1,14 +1,14 @@
 {
-  "name": "typescript-axios",
+  "name": "swagger_tof_pack",
   "version": "1.0.0",
-  "description": "OpenAPI client for typescript-axios",
+  "description": "OpenAPI client for swagger_tof_pack",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
     "axios",
     "typescript",
     "openapi-client",
     "openapi-generator",
-    "typescript-axios"
+    "swagger_tof_pack"
   ],
   "license": "Unlicense",
   "main": "./dist/index.js",

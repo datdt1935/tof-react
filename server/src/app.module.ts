@@ -5,7 +5,7 @@ import { NetWorkModule } from './networks/network.module';
 import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [ProductsModule, NetWorkModule],
+  imports: [ NetWorkModule],
   controllers: [AppController],
   providers: [AppService],
 })

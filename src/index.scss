@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  padding: 0 !important;
+  height: 100%;
+  width: 100%;
+  font-family: 'sf_Regular';
+  font-weight: 400;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+@font-face {
+  font-family: 'sf_Regular';
+  src: url('styles/fonts/SFProTTF/SFProDisplay-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'sf_Medium';
+  src: url('styles/fonts/SFProTTF/SFProDisplay-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'sf_Bold';
+  src: url('styles/fonts/SFProTTF/SFProDisplay-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'sf_SemiBold';
+  src: url('styles/fonts/SFProTTF/SFProDisplay-Semibold.ttf') format('truetype');
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+.canvas-container {
+  box-shadow: 0 4px 10px 0 rgba(16, 27, 79, 0.1);
+  border: 1px solid #e0e4e8;
+  box-sizing: border-box;
+}
+
+.mini-scrollbar {
+  overflow: auto;
+  overflow-y: overlay !important;
+  overflow-x: overlay !important;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.mini-scrollbar::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+.mini-scrollbar::-webkit-scrollbar-thumb {
+  background: #52abe2;
+  border-radius: 40px;
+}
+
+.mini-scrollbar:hover::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+.mini-scrollbar:hover::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}

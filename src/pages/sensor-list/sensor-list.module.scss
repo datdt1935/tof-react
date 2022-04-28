@@ -3,29 +3,32 @@
 .container {
   height: 100%;
   width: 100%;
+  &__title {
+    height: 54px;
+    font-family: 'sf_Bold';
+    font-size: 16px;
+    margin-bottom: 16px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+  }
 }
 
 .info {
-  height: 165px;
   display: flex;
+  flex-wrap: wrap;
 }
 .subnet {
-  width: 100%;
-  padding: 20px;
-  color: #3b3b3b;
-  &__title {
-    font-family: 'rbt_Bold';
-    font-size: 16px;
-    margin-bottom: 16px;
-  }
-
+  padding: 0 20px;
+  margin-bottom: 20px;
   &__selector {
     height: 40px;
     display: flex;
     align-items: center;
     &-title {
       width: 100px;
-      font-family: 'rbt_Bold';
+      font-family: 'sf_Medium';
 
       font-size: 16px;
     }
@@ -38,7 +41,7 @@
     margin-bottom: 4px;
     &-title {
       width: 100px;
-      font-family: 'rbt_Bold';
+      font-family: 'sf_Medium';
     }
     &-value {
       flex: 1;
@@ -51,32 +54,36 @@
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  .button {
-    @include containerCentered();
-    margin: spacing(2.5);
-    padding: 0 spacing(2.5);
-    height: 32px;
-    min-width: 100px;
-    border-radius: 3px;
-    cursor: pointer;
-    &.primary {
-      background-color: #0052cc;
-    }
-    &.secondary {
-      background-color: #bf2600;
-    }
-  }
+}
+
+.button {
+  @include containerCentered();
+  margin: spacing(2.5) !important;
+  height: 32px;
+  min-width: 100px !important;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 .footer {
   height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 .table {
   height: calc(100% - 165px - 72px);
   border: 1px solid #eceff3;
   margin: 0 20px;
-  overflow: auto;
-  &.loading {
-    @include containerCentered();
-  }
+  //   &.loading {
+  //     @include containerCentered();
+  //   }
+}
+
+.form-control {
+  min-width: 270px !important;
+}
+
+.circular-progress {
+  margin: 10px;
 }

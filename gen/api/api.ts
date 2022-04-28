@@ -24,6 +24,55 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface Gate
+ */
+export interface Gate {
+    /**
+     * 
+     * @type {number}
+     * @memberof Gate
+     */
+    chanel: number;
+    /**
+     * 
+     * @type {object}
+     * @memberof Gate
+     */
+    detail: object;
+    /**
+     * 
+     * @type {string}
+     * @memberof Gate
+     */
+    gate: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Gate
+     */
+    id: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Gate
+     */
+    minObject: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Gate
+     */
+    threshold: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Gate
+     */
+    url: string;
+}
+/**
+ * 
+ * @export
  * @interface MaskNetWork
  */
 export interface MaskNetWork {
@@ -46,37 +95,6 @@ export interface MaskNetWork {
      */
     dns: string;
 }
-/**
- * 
- * @export
- * @interface Product
- */
-export interface Product {
-    /**
-     * 
-     * @type {string}
-     * @memberof Product
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Product
-     */
-    tittle: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Product
-     */
-    description: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Product
-     */
-    price: number;
-}
 
 /**
  * DefaultApi - axios parameter creator
@@ -90,36 +108,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         appControllerGetHello: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/hello`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        appControllerGettestdata: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/data`;
+            const localVarPath = `/api/isRunning`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -161,15 +150,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.appControllerGetHello(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async appControllerGettestdata(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.appControllerGettestdata(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
     }
 };
 
@@ -187,14 +167,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         appControllerGetHello(options?: any): AxiosPromise<string> {
             return localVarFp.appControllerGetHello(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        appControllerGettestdata(options?: any): AxiosPromise<number> {
-            return localVarFp.appControllerGettestdata(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -215,16 +187,6 @@ export class DefaultApi extends BaseAPI {
     public appControllerGetHello(options?: any) {
         return DefaultApiFp(this.configuration).appControllerGetHello(options).then((request) => request(this.axios, this.basePath));
     }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public appControllerGettestdata(options?: any) {
-        return DefaultApiFp(this.configuration).appControllerGettestdata(options).then((request) => request(this.axios, this.basePath));
-    }
 }
 
 
@@ -239,7 +201,7 @@ export const NetworkAPIApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        networkControllerAddProduct: async (options: any = {}): Promise<RequestArgs> => {
+        networkControllerAddMaskNetWorkSample: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/networks`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -292,134 +254,13 @@ export const NetworkAPIApiAxiosParamCreator = function (configuration?: Configur
                 options: localVarRequestOptions,
             };
         },
-    }
-};
-
-/**
- * NetworkAPIApi - functional programming interface
- * @export
- */
-export const NetworkAPIApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = NetworkAPIApiAxiosParamCreator(configuration)
-    return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async networkControllerAddProduct(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerAddProduct(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async networkControllerGetAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MaskNetWork>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerGetAll(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * NetworkAPIApi - factory interface
- * @export
- */
-export const NetworkAPIApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = NetworkAPIApiFp(configuration)
-    return {
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        networkControllerAddProduct(options?: any): AxiosPromise<void> {
-            return localVarFp.networkControllerAddProduct(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        networkControllerGetAll(options?: any): AxiosPromise<Array<MaskNetWork>> {
-            return localVarFp.networkControllerGetAll(options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * NetworkAPIApi - object-oriented interface
- * @export
- * @class NetworkAPIApi
- * @extends {BaseAPI}
- */
-export class NetworkAPIApi extends BaseAPI {
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NetworkAPIApi
-     */
-    public networkControllerAddProduct(options?: any) {
-        return NetworkAPIApiFp(this.configuration).networkControllerAddProduct(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NetworkAPIApi
-     */
-    public networkControllerGetAll(options?: any) {
-        return NetworkAPIApiFp(this.configuration).networkControllerGetAll(options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-/**
- * ProductAPIApi - axios parameter creator
- * @export
- */
-export const ProductAPIApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        productsControllerAddProduct: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/products`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        productsControllerGetProduct: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/products`;
+        networkControllerGetDataPush: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/networks/GetDataPush`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -442,23 +283,174 @@ export const ProductAPIApiAxiosParamCreator = function (configuration?: Configur
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetDataTable: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/networks/GetDataTable`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetOptionsDropBoxs: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/networks/GetOptions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetSensors: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/networks/GetSensorsData`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetSingleGate: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/networks/GetSingleGate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {Gate} gate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerUpdateGate: async (gate: Gate, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'gate' is not null or undefined
+            assertParamExists('networkControllerUpdateGate', 'gate', gate)
+            const localVarPath = `/networks/UpdateGate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(gate, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
 /**
- * ProductAPIApi - functional programming interface
+ * NetworkAPIApi - functional programming interface
  * @export
  */
-export const ProductAPIApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ProductAPIApiAxiosParamCreator(configuration)
+export const NetworkAPIApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = NetworkAPIApiAxiosParamCreator(configuration)
     return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async productsControllerAddProduct(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.productsControllerAddProduct(options);
+        async networkControllerAddMaskNetWorkSample(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerAddMaskNetWorkSample(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -466,64 +458,229 @@ export const ProductAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async productsControllerGetProduct(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Product>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.productsControllerGetProduct(options);
+        async networkControllerGetAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MaskNetWork>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerGetAll(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async networkControllerGetDataPush(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerGetDataPush(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async networkControllerGetDataTable(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerGetDataTable(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async networkControllerGetOptionsDropBoxs(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerGetOptionsDropBoxs(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async networkControllerGetSensors(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerGetSensors(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async networkControllerGetSingleGate(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerGetSingleGate(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {Gate} gate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async networkControllerUpdateGate(gate: Gate, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.networkControllerUpdateGate(gate, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * ProductAPIApi - factory interface
+ * NetworkAPIApi - factory interface
  * @export
  */
-export const ProductAPIApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ProductAPIApiFp(configuration)
+export const NetworkAPIApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = NetworkAPIApiFp(configuration)
     return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        productsControllerAddProduct(options?: any): AxiosPromise<Product> {
-            return localVarFp.productsControllerAddProduct(options).then((request) => request(axios, basePath));
+        networkControllerAddMaskNetWorkSample(options?: any): AxiosPromise<void> {
+            return localVarFp.networkControllerAddMaskNetWorkSample(options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        productsControllerGetProduct(options?: any): AxiosPromise<Array<Product>> {
-            return localVarFp.productsControllerGetProduct(options).then((request) => request(axios, basePath));
+        networkControllerGetAll(options?: any): AxiosPromise<Array<MaskNetWork>> {
+            return localVarFp.networkControllerGetAll(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetDataPush(options?: any): AxiosPromise<void> {
+            return localVarFp.networkControllerGetDataPush(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetDataTable(options?: any): AxiosPromise<void> {
+            return localVarFp.networkControllerGetDataTable(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetOptionsDropBoxs(options?: any): AxiosPromise<Array<object>> {
+            return localVarFp.networkControllerGetOptionsDropBoxs(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetSensors(options?: any): AxiosPromise<void> {
+            return localVarFp.networkControllerGetSensors(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerGetSingleGate(options?: any): AxiosPromise<void> {
+            return localVarFp.networkControllerGetSingleGate(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {Gate} gate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        networkControllerUpdateGate(gate: Gate, options?: any): AxiosPromise<void> {
+            return localVarFp.networkControllerUpdateGate(gate, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * ProductAPIApi - object-oriented interface
+ * NetworkAPIApi - object-oriented interface
  * @export
- * @class ProductAPIApi
+ * @class NetworkAPIApi
  * @extends {BaseAPI}
  */
-export class ProductAPIApi extends BaseAPI {
+export class NetworkAPIApi extends BaseAPI {
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductAPIApi
+     * @memberof NetworkAPIApi
      */
-    public productsControllerAddProduct(options?: any) {
-        return ProductAPIApiFp(this.configuration).productsControllerAddProduct(options).then((request) => request(this.axios, this.basePath));
+    public networkControllerAddMaskNetWorkSample(options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerAddMaskNetWorkSample(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ProductAPIApi
+     * @memberof NetworkAPIApi
      */
-    public productsControllerGetProduct(options?: any) {
-        return ProductAPIApiFp(this.configuration).productsControllerGetProduct(options).then((request) => request(this.axios, this.basePath));
+    public networkControllerGetAll(options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerGetAll(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NetworkAPIApi
+     */
+    public networkControllerGetDataPush(options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerGetDataPush(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NetworkAPIApi
+     */
+    public networkControllerGetDataTable(options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerGetDataTable(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NetworkAPIApi
+     */
+    public networkControllerGetOptionsDropBoxs(options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerGetOptionsDropBoxs(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NetworkAPIApi
+     */
+    public networkControllerGetSensors(options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerGetSensors(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NetworkAPIApi
+     */
+    public networkControllerGetSingleGate(options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerGetSingleGate(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {Gate} gate 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NetworkAPIApi
+     */
+    public networkControllerUpdateGate(gate: Gate, options?: any) {
+        return NetworkAPIApiFp(this.configuration).networkControllerUpdateGate(gate, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

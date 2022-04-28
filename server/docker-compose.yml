@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+    dev:
+        container_name: nestjs_api_dev
+        image: nestjs-api-dev:1.0.0
+        build:
+            context: .
+            target: development
+            dockerfile: ./Dockerfile
+        command: npm run start:debug
+        ports:
+            - 3200:3200
+        networks:
+            - nesjs-network
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        restart: unless-stopped
+    prod:
+        container_name: nestjs_api_prod
+        image: nestjs-api-prod:1.0.0
+        build:
+            context: .
+            target: production
+            dockerfile: ./Dockerfile
+        command: npm run start:prod
+        ports:
+            - 3200:3200
+        networks:
+            - nesjs-network
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        restart: unless-stopped
+        environment: 
+            DB_CONNECT_STRING: "Host=dbpostgre;Port=5432;User Id=postgresuser;Password=123456;Database=tof_db;"
+    dbpostgre:
+        image: postgres:13.2
+        environment: 
+            POSTGRES_PASSWORD: '123456'
+            POSTGRES_USER: 'postgresuser'
+            POSTGRES_DB: 'tof_db'
+        volumes: 
+            - /c/dockerenv/sqldata:/var/lib/postgresql/data
+        ports: 
+            - '5432:5432'
+        networks:
+            - nesjs-network
+    
+
+networks:
+    nesjs-network:

@@ -1,28 +1,37 @@
+const { default: installExtension, REACT_DEVELOPER_TOOLS,REDUX_DEVTOOLS} = require('electron-devtools-installer')
+
 const { app, BrowserWindow, ipcMain } = require('electron');
+
 const path = require('path');
-const fs = require('fs');
 const url = require('url');
 
 let mainWindow;
 
-const netList = require('network-list');
+// const netList = require('network-list');
 
-const getAllIpNetwork = function async() {
-  return new Promise((rel) => {
-    console.log('Start scan net list');
-    netList.scan({}, (err, arr) => {
-      console.log(arr);
-      return rel(
-        arr.filter((e) => {
-          return e.alive;
-        })
-      );
-    });
-  });
-};
+// const getAllIpNetwork = function async() {
+//   return new Promise((rel) => {
+//     // netList.scanEach({}, (err, obj) => {
+//     //   console.log(`Got total ${ipArray.lenght}`);
+//     //   ipArray.push(obj);
+//     // });
+//     // setTimeout(() => {
+//     //   return rel(ipArray);
+//     // }, 15000);
+//     console.log('Start scan net list');
+//     netList.scan({}, (err, arr) => {
+//       console.log(arr);
+//       return rel(
+//         arr.filter((e) => {
+//           return e.alive;
+//         })
+//       );
+//     });
+//   });
+// };
 
 // let server = require('../server/index');
-let server = require('../server/dist/main');
+// let server = require('../server/dist/main');
 
 const isDev = require('electron-is-dev');
 
@@ -38,9 +47,17 @@ function createWindow() {
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: false, // turn off remote
       preload: pathPreload,
+      devTools : isDev
     },
   });
-
+  if(isDev){
+    installExtension(REACT_DEVELOPER_TOOLS)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
+    installExtension(REDUX_DEVTOOLS)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
+  }
   ipcMain.on('notify', (_, message) => {
     let ts = Date.now();
     let date_ob = new Date(ts);
@@ -51,10 +68,10 @@ function createWindow() {
     console.log(`You click at ${secs} second - ${date} ${month} ${year}`);
   });
 
-  ipcMain.handle('scanLocalIP', async (event, someArgument) => {
-    var ips = await getAllIpNetwork();
-    return ips;
-  });
+//   ipcMain.handle('scanLocalIP', async (event, someArgument) => {
+//     var ips = await getAllIpNetwork();
+//     return ips;
+//   });
 
   ipcMain.handle('mdnsFetch', async (event, someArgument) => {
     return finalData;
@@ -80,11 +97,6 @@ function createWindow() {
       slashes: true,
     });
 
-  // startUrl = mainWindow.loadURL(
-  //   isDev
-  //     ? 'http://localhost:5000'
-  //     : `file://${path.join(__dirname, '../build/index.html')}`
-  // );
   mainWindow.loadURL(startUrl);
 
   // Open the DevTools.
@@ -121,11 +133,7 @@ app.on('activate', function () {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
-
-// Service Worker scan
-
+// Service mDNS Worker scan
 var finalData = [];
 var mdns;
 var _ = require('lodash');
@@ -159,7 +167,7 @@ function startMDNS() {
   });
 
   mdns.on('query', function (query) {
-    // console.log("got a query packet:", query);
+    // console.log('got a query packet:', query.questions);
   });
 
   // lets query for an A record for 'brunhilde.local'

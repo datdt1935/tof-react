@@ -1,34 +1,40 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import PrivateRoute from 'components/common/PrivateRoute';
-import WEB_ROUTES from 'config/web-router';
-import Login from 'pages/login';
-import SensorDetail from 'pages/sensor-configuration/sensor-configuration.component';
+import ThemeProvider from 'context/theme.context';
+import SnackbarProvider from 'context/notification.context';
+
+import WEB_ROUTES from 'constants/web-router';
 import LayoutComponent from 'pages/layout/layout.component';
-import SensorListComponent from 'pages/sensor-list/sensor-list.component';
 
-const Root: React.FC = (props) => {
+const SensorDetail = lazy(
+  () => import('pages/sensor-configuration/sensor-configuration.component')
+);
+const SensorListComponent = lazy(
+  () => import('pages/sensor-list/sensor-list.component')
+);
+
+const Root: React.FC = () => {
   return (
-    <>
-      <LayoutComponent>
-        <Suspense fallback={<div>Loading</div>}>
-          <Switch>
-            <Route exact path={WEB_ROUTES.LOGIN_PAGE.path} component={Login} />
-            <Route
-              exact
-              path={WEB_ROUTES.DASHBOARD.path}
-              component={SensorListComponent}
-            />
-            <Route
-              exact
-              path={WEB_ROUTES.SENSOR_DETAIL.path}
-              component={SensorDetail}
-            />
-          </Switch>
-        </Suspense>
-      </LayoutComponent>
-    </>
+    <ThemeProvider>
+      <SnackbarProvider>
+        <LayoutComponent>
+          <Suspense fallback={<div>Loading</div>}>
+            <Switch>
+              <Route
+                exact
+                path={WEB_ROUTES.DASHBOARD.path}
+                component={SensorListComponent}
+              />
+              <Route
+                path={WEB_ROUTES.SENSOR_DETAIL.path}
+                component={SensorDetail}
+              />
+            </Switch>
+          </Suspense>
+        </LayoutComponent>
+      </SnackbarProvider>
+    </ThemeProvider>
   );
 };
 

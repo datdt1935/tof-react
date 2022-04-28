@@ -1,74 +1,78 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
+
 import styles from './image-canvas.module.scss';
+
+import ObjectPropertiesComponent from './object-properties/object-properties.component';
 
 import useImageCanvasHook from './image-canvas.hook';
 import {
   BackgroundType,
   DrawType,
+<<<<<<< Updated upstream
+} from 'constants/recognition-properties.constant';
+=======
 } from '../recognition-properties/recognition-properties.constant';
+>>>>>>> Stashed changes
+import classNames from 'classnames';
+import { useLayoutStyle } from 'utils/theme.util';
 
 interface IImageCanvasProps {
   imageSource: string;
-  width: number;
-  height: number;
-  captureOcrData: Function;
-  dataRectangle?: any[];
+  finishDraw: Function;
   drawType: DrawType;
   backgroundType: BackgroundType;
+  ref?: any;
 }
 
-const ImageCanvasContainer: React.FC<IImageCanvasProps> = ({
-  captureOcrData,
-  imageSource,
-  width,
-  height,
-  dataRectangle,
-  drawType,
-  backgroundType,
-}) => {
-  const { isError } = useImageCanvasHook(
-    imageSource,
-    width,
-    height,
-    captureOcrData,
-    drawType,
-    backgroundType,
-    dataRectangle
-  );
+const ImageCanvasContainer: React.FC<IImageCanvasProps> = forwardRef(
+  ({ finishDraw, imageSource, drawType, backgroundType }, ref) => {
+<<<<<<< Updated upstream
+    const {
+      activeObject,
+      updateActiveObject,
+      isError,
+      containerRef,
+      updateObjectByPolyName,
+    } = useImageCanvasHook(
+=======
+    const { activeObject, isError, containerRef } = useImageCanvasHook(
+>>>>>>> Stashed changes
+      imageSource,
+      finishDraw,
+      drawType,
+      backgroundType,
+      ref
+    );
+    const styleDarkMode = useLayoutStyle();
 
-  return (
-    <>
-      {isError && (
-        <div className={styles['image-canvas__error']}>No image available</div>
-      )}
-      <div
-        id="image-canvas__wrapper"
-        style={{ position: 'relative', height: '100%' }}
-      >
+    return (
+      <>
+        {isError && (
+          <div className={styles['image-canvas__error']}>
+            No image available
+          </div>
+        )}
         <div
           id="image__canvas-container"
+          ref={containerRef}
           style={{ height: '100%' }}
-          className={styles['image-canvas__container']}
+          className={classNames(
+            styles['image-canvas__container'],
+            styleDarkMode.bgHeader
+          )}
         >
           <canvas id="image__canvas"></canvas>
         </div>
-      </div>
-      <video
-        crossOrigin="anonymous"
-        id="video1"
-        style={{ display: 'none' }}
-        className="canvas-img"
-        width={width}
-        height={height}
-      >
-        <source
-          id="video_src1"
-          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-          type="video/mp4"
-        />
-      </video>
-    </>
-  );
-};
+        <ObjectPropertiesComponent
+          data={activeObject}
+          updateActiveObject={updateActiveObject}
+          updateObjectProperty={updateObjectByPolyName}
+=======
+>>>>>>> Stashed changes
+        ></ObjectPropertiesComponent>
+      </>
+    );
+  }
+);
 
 export default ImageCanvasContainer;

@@ -1,4 +1,4 @@
-## typescript-axios@1.0.0
+## swagger_tof_pack@1.0.0
 
 This generator creates TypeScript/JavaScript client that utilizes [axios](https://github.com/axios/axios). The generated Node module can be used in the following environments:
 
@@ -36,7 +36,7 @@ navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install typescript-axios@1.0.0 --save
+npm install swagger_tof_pack@1.0.0 --save
 ```
 
 _unPublished (not recommended):_

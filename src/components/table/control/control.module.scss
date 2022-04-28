@@ -1,0 +1,15 @@
+@import 'styles/mixin.scss';
+
+.icon-button-container {
+  @include containerCentered();
+  justify-content: flex-end;
+  height: 100%;
+  width: calc(100% - 2em);
+}
+
+.icon-button {
+  @include containerCentered();
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 1em;
+}

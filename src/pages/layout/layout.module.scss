@@ -22,7 +22,7 @@
   }
 }
 $headerHeight: spacing(8);
-$wrapperSpacing: spacing(2);
+$wrapperSpacing: spacing(2.5);
 
 .header {
   height: $headerHeight;
@@ -39,6 +39,19 @@ $wrapperSpacing: spacing(2);
     border-radius: 4px;
     border: 1px solid;
     text-decoration: unset;
+  }
+  .space {
+    flex: 1;
+  }
+
+  .button-icon {
+    @include containerCentered();
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    margin-right: 20px;
+    font-size: 20px;
   }
 }
 
